@@ -1,5 +1,4 @@
-
-BoardGame-Web-Application ( Full-Stack)
+### BoardGame-Full-Stack-Web-Application
 
 
 Frontend: Thymeleaf, Thymeleaf Fragments, HTML5, CSS, JavaScript, Twitter Bootstra
@@ -13,8 +12,8 @@ This web application serves as a comprehensive database for board games and thei
 Viewing Board Games and Reviews: Anyone can browse the list of the board games and read the reviews without logging in.
 User Login: Users must log in to contribute to the database.
 User Roles and Permissions:
-	- Users: Logged-in users can add new board games to the list and submit their reviews.
-	- Managers: In addition to the abilities of regular users, managers have the authority to edit or delete any reviews
+	- Users: Logged-in users can add new board games to the list and  submit their reviews.
+	- Managers: In addition to the abilities of regular users, managers have  the authority to edit or delete any reviews
 
 
 
