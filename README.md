@@ -1,4 +1,4 @@
-### BoardGame-Full-Stack-Web-Application
+# BoardgameListingWebApp
 
 
 Frontend: Thymeleaf, Thymeleaf Fragments, HTML5, CSS, JavaScript, Twitter Bootstra
