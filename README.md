@@ -1,6 +1,7 @@
 
 BoardGame-Web-Application ( Full-Stack)
 
+
 Frontend: Thymeleaf, Thymeleaf Fragments, HTML5, CSS, JavaScript, Twitter Bootstra
 Backend: Java, Spring Boot, Spring MVC, JDBC, H2 Database Engine, Spring Security
 Cloud Services: AWS EC2
