@@ -7,12 +7,16 @@ Cloud Services: AWS EC2
 Testing: JUnit test framework.
 Build Tools: Maven
 
-<img align="right" alt="Coding" width="400" src="https://github.com/Sharadvanth/Sharadvanth/blob/main/!2.gif">
+<img align="right" alt="Coding" width="400" src="https://github.com/Sharadvanth/FullStack-WebApp-DevOps/blob/main/!NEW.gif">
 
 This web application serves as a comprehensive database for board games and their reviews. It offers the following features:
 
 Viewing Board Games and Reviews: Anyone can browse the list of the board games and read the reviews without logging in.
+
+
 User Login: Users must log in to contribute to the database.
+
+
 User Roles and Permissions:
 	- Users: Logged-in users can add new board games to the list and  submit their reviews.
 	- Managers: In addition to the abilities of regular users, managers have  the authority to edit or delete any reviews
