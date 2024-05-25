@@ -1,6 +1,5 @@
 Architecture Flow For the WebApplication
 
-
-<img src="https://github.com/Sharadvanth/FullStack-WebApp-DevOps/blob/main/Documents/Architecture.pdf" alt="sharadvanth"  width="1000" height="600"/>
-
-
+<a>
+ <img src="https://raw.githubusercontent.com/Sharadvanth/Sharadvanth/main/!D.webp" alt="MasterHead" width="1000" height="200">
+</a>
