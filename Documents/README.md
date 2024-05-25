@@ -1,5 +1,2 @@
-Architecture Flow For the WebApplication
+![Architecture](https://github.com/Sharadvanth/FullStack-WebApp-DevOps/raw/main/Documents/Architecture.pdf)
 
-<a>
- <img src="https://github.com/Sharadvanth/FullStack-WebApp-DevOps/blob/main/Documents/Architecture.pdf" width="800" height="600">
-</a>
