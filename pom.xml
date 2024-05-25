@@ -120,12 +120,12 @@
     <repository>
         <id>central</id>
         <name>a0dp013p0tczd-artifactory-primary-0-releases</name>
-        <url>https://devopsartifacts77.jfrog.io/artifactory/my-repo-local</url>
+        <url>https://devopsartifacts77.jfrog.io/artifactory/devsecops</url>
     </repository>
     <snapshotRepository>
         <id>snapshots</id>
         <name>a0dp013p0tczd-artifactory-primary-0-snapshots</name>
-        <url>https://devopsartifacts77.jfrog.io/artifactory/my-repo-local</url>
+        <url>https://devopsartifacts77.jfrog.io/artifactory/devsecops</url>
     </snapshotRepository>
 </distributionManagement>
 
