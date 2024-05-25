@@ -2,4 +2,91 @@
 
 
 
+pipeline {
+    agent {
+        label 'jenkins-slave'
+    }
+    
+    tools {
+        jdk 'jdk11'
+        maven 'maven3'
+        jfrog 'jfrog-cli'
+    }
+    
+    environment {
+        SCANNER_HOME=tool 'sonar-scanner'
+    }
+
+    stages {
+        stage('Git_Chcekout') {
+            steps {
+              git branch: 'main', 
+              changelog: false, 
+              poll: false, 
+              url: 'https://github.com/Sharadvanth/FullStack-WebApp-DevOps.git'  
+            }
+        }
+        stage('Maven_Compile') {
+            steps {
+              echo "Compiling the Source Code using Maven"
+              sh 'mvn clean compile'
+            }
+        }
+        stage('Maven_Test') {
+            steps {
+              echo "Running the Tests using Maven"
+              sh 'mvn test'
+            }
+        }
+        stage('Sonarqube_Analysis') {
+            steps {
+              withSonarQubeEnv('sonar-server') {
+                        sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=webappBoard \
+                        -Dsonar.java.binaries=. \
+                        -Dsonar.projectKey=webappBoard '''
+                    }
+            }
+        }
+        stage('Sonarqube_QualityGates') {
+            steps {
+              script{
+                  waitForQualityGate abortPipeline: false, 
+                  credentialsId: 'sonar-cred'
+              }
+            }
+        }
+        stage('Maven_Package') {
+            steps {
+              echo "Packaging the SourceCode using Maven"
+              sh 'mvn clean install'
+            }
+        }
+        stage('Owasp_DependencyCheck') {
+            steps {
+               dependencyCheck additionalArguments: ' --scan ./', odcInstallation: 'DP'
+               dependencyCheckPublisher pattern:'**/dependency-check-report.xml'  
+            }
+        }
+         stage('Jfrog_Deploy') {
+            steps {
+                script {
+                jf '-v'
+                
+                jf 'c show'
+                rtUpload (
+                    serverId: 'Artifactory01',
+                    spec: '''{
+                        "files": [
+                         {
+                         "pattern": "/home/ubuntu/workspace/Corporate_CI_Pipeline/target/database_service_project-0.0.2.jar ",
+                         "target": "devsecops"
+                         }
+                                 ]
+                      }''',
+                    )
+                }
+            }
+        }
+    }
+}
 
