@@ -1,1 +1,5 @@
-Below are the Attached screenshots of the CI/CD Pipeline and Sonarqube server 
+The Attached Screenshots best decribe:
+
+  - Sonarqubeserver, Token, Webhook.
+  - CI pipeline 
+  - CD Pipeline
