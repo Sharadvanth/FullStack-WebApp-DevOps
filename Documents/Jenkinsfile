@@ -1,7 +1,3 @@
-#CI_Pipeline
-
-
-
 pipeline {
     agent {
         label 'jenkins-slave'
@@ -67,38 +63,70 @@ pipeline {
                dependencyCheckPublisher pattern:'**/dependency-check-report.xml'  
             }
         }
-         stage('Jfrog_Deploy') {
+        stage('Jfrog_Deploy') {
             steps {
                 script {
                 jf '-v'
-                
                 jf 'c show'
-                rtUpload (
-                    serverId: 'Artifactory01',
-                    spec: '''{
-                        "files": [
-                         {
-                         "pattern": "/home/ubuntu/workspace/Corporate_CI_Pipeline/target/database_service_project-0.0.2.jar ",
-                         "target": "devsecops"
-                         }
-                                 ]
-                      }''',
-                    )
+                jf 'rt ping'
+                jf 'rt u target/**.jar devsecops'
+                jf 'rt bp'
+                
                 }
-            }
-        }
-        stage('Docker_Build') {
+                    
+            }    
+        } 
+	    stage('Docker_Build') {
             steps {
                 script {
                // This step should not normally be used in your script. Consult the inline help for details.
-            withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                     sh "docker build -t webappboard ."
-                    sh "docker tag webappboard sharadvanth/webappboard:1.0.1"
-                    sh "docker push sharadvanth/webappboard:1.0.1"
+                    sh "docker tag webappboard sharadvanth/webappboard:1.0.2"
                     }
                 }    
             }
         }
+        stage('Trivy_Image_Scan') {
+            steps {
+               sh "trivy image --format table -o trivy-image-report.html sharadvanth/webappboard:1.0.2"
+            }
+        }
+        stage('Docker_Push') {
+            steps {
+                script {
+               // This step should not normally be used in your script. Consult the inline help for details.
+                withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                    sh "docker push sharadvanth/webappboard:1.0.2"
+                    }
+                }    
+            }
+        }
+        stage('Kubernetes_Deploy') {
+            steps {
+               withKubeConfig(caCertificate: '', clusterName: 'minikube', contextName: '', credentialsId: 'Kube-Cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.49.2:8443') {
+                    sh "kubectl apply -f deployment-service.yaml"
+                }
+            }
+        }
+        stage('Check_the_Deployment') {
+            steps {
+               withKubeConfig(caCertificate: '', clusterName: 'minikube', contextName: '', credentialsId: 'Kube-Cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.49.2:8443') {
+                    sh "kubectl get pods -n webapps"
+                    sh "kubectl get svc -n webapps"
+                }
+            }
+        }
+         stage('Slack_Notification') {
+            steps {
+               slackSend channel: '#general', 
+               color: 'Green', 
+               message: 'Successful Completion of ${env.JOB_NAME} with ${env.BUILD_NUMBER}', 
+               teamDomain: 'devsecops-zsw7372', 
+               tokenCredentialId: 'slack-cred'
+            }
+        }
     }
 }
+
 
