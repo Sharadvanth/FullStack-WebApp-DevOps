@@ -1,3 +1,5 @@
+#CI_Pipeline
+
 pipeline {
     agent {
         label 'jenkins-slave'
@@ -101,7 +103,31 @@ pipeline {
                     }
                 }    
             }
-        }
+        }    
+    }
+    post {
+        success {
+            // Trigger CD pipeline
+            build job: 'CD_Pipeline', wait: true
+        	}
+	always {
+		//Archive the Artifacts	
+	   archiveArtifacts allowEmptyArchive: true, artifacts: '**', fingerprint: true, onlyIfSuccessful: true
+		}    
+    	}	
+}
+
+
+
+#CD_Pipeline
+
+
+
+pipeline {
+    agent {
+        label 'jenkins-slave'
+	    }
+     stages {
         stage('Kubernetes_Deploy') {
             steps {
                withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'Kube-Cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.49.2:6443') {
@@ -126,13 +152,14 @@ pipeline {
                tokenCredentialId: 'slack-cred'
             }
         }
-		    
-    }
+     }	     
+	
 post {
 	always {
-		archiveArtifacts allowEmptyArchive: true, artifacts: '**', fingerprint: true, onlyIfSuccessful: true
-	}
-   }	
+		echo "Successfully Deployed your WebApplication To Kubernetes Cluster"
+		}
+        }	
 }
+
 
 
