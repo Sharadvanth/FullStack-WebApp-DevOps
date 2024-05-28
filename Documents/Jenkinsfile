@@ -117,7 +117,7 @@ pipeline {
                 }
             }
         }
-         stage('Slack_Notification') {
+        stage('Slack_Notification') {
             steps {
                slackSend channel: '#general', 
                color: 'Green', 
@@ -126,7 +126,13 @@ pipeline {
                tokenCredentialId: 'slack-cred'
             }
         }
+		    
     }
+post {
+	always {
+		archiveArtifacts allowEmptyArchive: true, artifacts: '**', fingerprint: true, onlyIfSuccessful: true
+	}
+   }	
 }
 
 
