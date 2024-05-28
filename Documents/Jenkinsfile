@@ -104,14 +104,14 @@ pipeline {
         }
         stage('Kubernetes_Deploy') {
             steps {
-               withKubeConfig(caCertificate: '', clusterName: 'minikube', contextName: '', credentialsId: 'Kube-Cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.49.2:8443') {
+               withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'Kube-Cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.49.2:6443') {
                     sh "kubectl apply -f deployment-service.yaml"
                 }
             }
         }
         stage('Check_the_Deployment') {
             steps {
-               withKubeConfig(caCertificate: '', clusterName: 'minikube', contextName: '', credentialsId: 'Kube-Cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.49.2:8443') {
+               withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'Kube-Cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.49.2:6443') {
                     sh "kubectl get pods -n webapps"
                     sh "kubectl get svc -n webapps"
                 }
